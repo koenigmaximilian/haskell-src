@@ -53,11 +53,13 @@ instance Monad ParseResult where
   ParseOk x           >>= f = f x
   ParseFailed loc msg >>= _ = ParseFailed loc msg
 
+instance Semigroup m => Semigroup (ParseResult m) where
+  ParseOk x <> ParseOk y = ParseOk $ x <> y
+  ParseOk _ <> err       = err
+  err       <> _         = err -- left-biased
+
 instance Monoid m => Monoid (ParseResult m) where
   mempty = ParseOk mempty
-  ParseOk x `mappend` ParseOk y = ParseOk $ x `mappend` y
-  ParseOk _ `mappend` err       = err
-  err       `mappend` _         = err -- left-biased
 
 -- internal version
 data ParseStatus a = Ok ParseState a | Failed SrcLoc String
