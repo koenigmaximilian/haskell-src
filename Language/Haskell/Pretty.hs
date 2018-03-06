@@ -22,6 +22,8 @@ module Language.Haskell.Pretty (
                 -- * Haskell formatting modes
                 PPHsMode(..), Indent, PPLayout(..), defaultMode) where
 
+import Prelude hiding ((<>))
+
 import Language.Haskell.Syntax
 
 import Control.Applicative (Applicative(..))
